@@ -1,4 +1,3 @@
-
 import 'dart:convert';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -116,6 +115,69 @@ class AuthNotifier extends StateNotifier<AuthState> {
       };
       
       final response = await _apiService.post('/auth/register/rider', data: data);
+      
+      // Extract token and user data
+      final token = response['token'];
+      final userData = response['data']['user'];
+      final walletData = response['data']['wallet'];
+      
+      // Create user object
+      final user = User.fromJson({
+        ...userData,
+        'wallet': walletData,
+      });
+      
+      // Save data to secure storage
+      await _storageService.saveAuthToken(token);
+      await _storageService.saveUserId(user.id);
+      await _storageService.saveUserRole(user.role);
+      await _storageService.saveUserProfile(jsonEncode(user.toJson()));
+      
+      // Update state
+      state = state.copyWith(
+        status: AuthStatus.authenticated,
+        user: user,
+      );
+    } catch (e) {
+      rethrow;
+    }
+  }
+  
+  Future<void> registerDriver({
+    required String firstName,
+    required String lastName,
+    required String email,
+    required String phone,
+    required String password,
+    required String vehicleType,
+    required String vehicleMake,
+    required String vehicleModel,
+    required String vehicleColor,
+    required String licensePlate,
+    required String driversLicense,
+    required String driversLicenseExpiry,
+    required String vehicleInsurance,
+    required String vehicleRegistration,
+  }) async {
+    try {
+      final data = {
+        'firstName': firstName,
+        'lastName': lastName,
+        'email': email,
+        'phone': phone,
+        'password': password,
+        'vehicleType': vehicleType,
+        'vehicleMake': vehicleMake,
+        'vehicleModel': vehicleModel,
+        'vehicleColor': vehicleColor,
+        'licensePlate': licensePlate,
+        'driversLicense': driversLicense,
+        'driversLicenseExpiry': driversLicenseExpiry,
+        'vehicleInsurance': vehicleInsurance,
+        'vehicleRegistration': vehicleRegistration,
+      };
+      
+      final response = await _apiService.post('/auth/register/driver', data: data);
       
       // Extract token and user data
       final token = response['token'];

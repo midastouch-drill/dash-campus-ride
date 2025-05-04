@@ -8,9 +8,13 @@ import 'package:campus_dash/features/onboarding/screens/onboarding_screen.dart';
 import 'package:campus_dash/features/onboarding/screens/role_selection_screen.dart';
 import 'package:campus_dash/features/auth/screens/login_screen.dart';
 import 'package:campus_dash/features/auth/screens/register_screen.dart';
+import 'package:campus_dash/features/auth/screens/driver_register_screen.dart';
 import 'package:campus_dash/features/dashboard/screens/rider_dashboard_screen.dart';
+import 'package:campus_dash/features/dashboard/screens/driver_dashboard_screen.dart';
+import 'package:campus_dash/features/dashboard/screens/driver_earnings_screen.dart';
 import 'package:campus_dash/features/ride/screens/request_ride_screen.dart';
 import 'package:campus_dash/features/ride/screens/ride_tracking_screen.dart';
+import 'package:campus_dash/features/ride/screens/driver_ride_tracking_screen.dart';
 import 'package:campus_dash/features/wallet/screens/wallet_screen.dart';
 import 'package:campus_dash/features/history/screens/ride_history_screen.dart';
 
@@ -24,6 +28,7 @@ final appRouterProvider = Provider<GoRouter>((ref) {
       final isLoggedIn = authState.isLoggedIn;
       final isOnboardingComplete = authState.isOnboardingComplete;
       final isInitializing = authState.isInitializing;
+      final isDriver = authState.user?.role == 'driver';
       
       // Don't redirect if still initializing auth state
       if (isInitializing) return null;
@@ -31,13 +36,14 @@ final appRouterProvider = Provider<GoRouter>((ref) {
       // Check if the user is on a public route
       final isGoingToLogin = state.location == '/login';
       final isGoingToRegister = state.location == '/register';
+      final isGoingToDriverRegister = state.location == '/register-driver';
       final isGoingToOnboarding = state.location == '/onboarding';
       final isGoingToRoleSelection = state.location == '/role-selection';
       final isGoingToSplash = state.location == '/';
       
       // If the user is already logged in but tries to access login or register, redirect them to home
-      if (isLoggedIn && (isGoingToLogin || isGoingToRegister || isGoingToOnboarding || isGoingToRoleSelection || isGoingToSplash)) {
-        return '/dashboard';
+      if (isLoggedIn && (isGoingToLogin || isGoingToRegister || isGoingToDriverRegister || isGoingToOnboarding || isGoingToRoleSelection || isGoingToSplash)) {
+        return isDriver ? '/driver/dashboard' : '/dashboard';
       }
       
       // If the user is not logged in
@@ -51,7 +57,7 @@ final appRouterProvider = Provider<GoRouter>((ref) {
         }
         
         // If trying to access private routes, redirect to login
-        if (!isGoingToLogin && !isGoingToRegister && !isGoingToOnboarding && !isGoingToRoleSelection) {
+        if (!isGoingToLogin && !isGoingToRegister && !isGoingToDriverRegister && !isGoingToOnboarding && !isGoingToRoleSelection) {
           return '/login';
         }
       }
@@ -80,8 +86,20 @@ final appRouterProvider = Provider<GoRouter>((ref) {
         builder: (context, state) => const RegisterScreen(),
       ),
       GoRoute(
+        path: '/register-driver',
+        builder: (context, state) => const DriverRegisterScreen(),
+      ),
+      GoRoute(
         path: '/dashboard',
         builder: (context, state) => const RiderDashboardScreen(),
+      ),
+      GoRoute(
+        path: '/driver/dashboard',
+        builder: (context, state) => const DriverDashboardScreen(),
+      ),
+      GoRoute(
+        path: '/driver/earnings',
+        builder: (context, state) => const DriverEarningsScreen(),
       ),
       GoRoute(
         path: '/request-ride',
@@ -89,9 +107,13 @@ final appRouterProvider = Provider<GoRouter>((ref) {
       ),
       GoRoute(
         path: '/ride/:id',
-        builder: (context, state) => RideTrackingScreen(
-          rideId: state.params['id']!,
-        ),
+        builder: (context, state) {
+          final rideId = state.params['id']!;
+          final isDriver = ref.read(authProvider).user?.role == 'driver';
+          return isDriver 
+              ? DriverRideTrackingScreen(rideId: rideId)
+              : RideTrackingScreen(rideId: rideId);
+        },
       ),
       GoRoute(
         path: '/wallet',
