@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
@@ -7,6 +6,7 @@ import 'package:campus_dash/features/ride/providers/ride_request_provider.dart';
 import 'package:campus_dash/features/ride/widgets/location_search_field.dart';
 import 'package:campus_dash/shared/widgets/custom_snackbar.dart';
 import 'package:flutter_osm_plugin/flutter_osm_plugin.dart';
+import 'package:flutter_map/flutter_map.dart' as flutter_map;
 
 class RequestRideScreen extends ConsumerStatefulWidget {
   const RequestRideScreen({super.key});
@@ -27,6 +27,7 @@ class _RequestRideScreenState extends ConsumerState<RequestRideScreen> {
   @override
   void initState() {
     super.initState();
+    // Initialize the OSM MapController
     _mapController = MapController(
       initPosition: GeoPoint(latitude: 6.5244, longitude: 3.3792), // Lagos
     );

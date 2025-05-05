@@ -1,5 +1,6 @@
 
 import 'package:campus_dash/features/history/models/ride_model.dart';
+import 'package:campus_dash/features/ride/models/location_model.dart';
 
 class ActiveRide {
   final String id;
@@ -16,6 +17,7 @@ class ActiveRide {
   final DriverInfo? driver;
   final double? rating;
   final String? review;
+  final String riderName; // Added riderName field
 
   ActiveRide({
     required this.id,
@@ -32,7 +34,24 @@ class ActiveRide {
     this.driver,
     this.rating,
     this.review,
+    required this.riderName, // Added riderName parameter
   });
+
+  // Add getter for pickupLocation
+  LocationInfo get pickupLocation {
+    return LocationInfo(
+      name: pickupLocationName,
+      coordinates: [pickupCoordinates[0], pickupCoordinates[1]],
+    );
+  }
+
+  // Add getter for dropoffLocation
+  LocationInfo get dropoffLocation {
+    return LocationInfo(
+      name: dropoffLocationName,
+      coordinates: [dropoffCoordinates[0], dropoffCoordinates[1]],
+    );
+  }
 
   factory ActiveRide.fromJson(Map<String, dynamic> json) {
     return ActiveRide(
@@ -50,6 +69,7 @@ class ActiveRide {
       driver: json['driver'] != null ? DriverInfo.fromJson(json['driver']) : null,
       rating: json['rating']?.toDouble(),
       review: json['review'],
+      riderName: json['riderName'] ?? 'Passenger', // Extract riderName with fallback
     );
   }
 
@@ -90,6 +110,7 @@ class ActiveRide {
       'driver': driver?.toJson(),
       'rating': rating,
       'review': review,
+      'riderName': riderName, // Added riderName to JSON output
     };
   }
 
@@ -108,6 +129,7 @@ class ActiveRide {
     DriverInfo? driver,
     double? rating,
     String? review,
+    String? riderName, // Added riderName parameter
   }) {
     return ActiveRide(
       id: id ?? this.id,
@@ -124,6 +146,7 @@ class ActiveRide {
       driver: driver ?? this.driver,
       rating: rating ?? this.rating,
       review: review ?? this.review,
+      riderName: riderName ?? this.riderName, // Use riderName in copyWith
     );
   }
 }
