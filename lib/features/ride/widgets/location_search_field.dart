@@ -84,7 +84,9 @@ class _LocationSearchFieldState extends State<LocationSearchField> {
         longitude: searchInfo.point!.longitude,
       );
       
-      widget.onLocationSelected(point, searchInfo.address!);
+      // Convert Address object to string for onLocationSelected callback
+      final addressStr = searchInfo.address.toString();
+      widget.onLocationSelected(point, addressStr);
       
       setState(() {
         _searchResults = [];
@@ -94,6 +96,20 @@ class _LocationSearchFieldState extends State<LocationSearchField> {
     } catch (e) {
       // Handle error
     }
+  }
+
+  String _getMainPart(String? addressStr) {
+    if (addressStr == null || !addressStr.contains(',')) {
+      return addressStr ?? '';
+    }
+    return addressStr.split(',').first;
+  }
+
+  String _getDetailPart(String? addressStr) {
+    if (addressStr == null || !addressStr.contains(',')) {
+      return '';
+    }
+    return addressStr.substring(addressStr.indexOf(',') + 1).trim();
   }
 
   @override
@@ -168,14 +184,17 @@ class _LocationSearchFieldState extends State<LocationSearchField> {
               itemCount: _searchResults.length,
               itemBuilder: (context, index) {
                 final result = _searchResults[index];
+                // Convert Address object to string before processing
+                final addressStr = result.address.toString();
+                
                 return ListTile(
                   leading: const Icon(Icons.location_on_outlined),
                   title: Text(
-                    result.address?.split(',').first ?? '',
+                    _getMainPart(addressStr),
                     style: const TextStyle(fontSize: 14),
                   ),
                   subtitle: Text(
-                    result.address?.substring(result.address!.indexOf(',') + 1) ?? '',
+                    _getDetailPart(addressStr),
                     style: TextStyle(
                       fontSize: 12,
                       color: Colors.grey.shade700,
