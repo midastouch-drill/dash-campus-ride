@@ -1,0 +1,1057 @@
+
+{
+    "info": {
+      "_postman_id": "aeb67172-e3c5-4d23-bc8b-35b125209a7f",
+      "name": "Dash University Ride-Hailing API",
+      "description": "Complete API collection for the Dash University Ride-Hailing Platform",
+      "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+    },
+    "item": [
+      {
+        "name": "Auth",
+        "item": [
+          {
+            "name": "Register Rider",
+            "request": {
+              "method": "POST",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": {
+                "mode": "raw",
+                "raw": "{\n    \"firstName\": \"John\",\n    \"lastName\": \"Doe\",\n    \"email\": \"rider@example.com\",\n    \"phone\": \"08012345678\",\n    \"password\": \"password123\"\n}"
+              },
+              "url": {
+                "raw": "{{baseUrl}}/api/v1/auth/register/rider",
+                "host": ["{{baseUrl}}"],
+                "path": ["api", "v1", "auth", "register", "rider"]
+              },
+              "description": "Register a new rider account"
+            }
+          },
+          {
+            "name": "Register Driver",
+            "request": {
+              "method": "POST",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": {
+                "mode": "raw",
+                "raw": "{\n    \"firstName\": \"Jane\",\n    \"lastName\": \"Smith\",\n    \"email\": \"driver@example.com\",\n    \"phone\": \"08087654321\",\n    \"password\": \"password123\",\n    \"vehicleType\": \"keke\",\n    \"vehicleMake\": \"Toyota\",\n    \"vehicleModel\": \"Corolla\",\n    \"vehicleColor\": \"Blue\",\n    \"licensePlate\": \"ABC123XY\",\n    \"driversLicense\": \"DL12345678\",\n    \"driversLicenseExpiry\": \"2024-12-31\",\n    \"vehicleInsurance\": \"INS12345\",\n    \"vehicleRegistration\": \"REG54321\"\n}"
+              },
+              "url": {
+                "raw": "{{baseUrl}}/api/v1/auth/register/driver",
+                "host": ["{{baseUrl}}"],
+                "path": ["api", "v1", "auth", "register", "driver"]
+              },
+              "description": "Register a new driver account"
+            }
+          },
+          {
+            "name": "Login",
+            "request": {
+              "method": "POST",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": {
+                "mode": "raw",
+                "raw": "{\n    \"email\": \"user@example.com\",\n    \"password\": \"password123\"\n}"
+              },
+              "url": {
+                "raw": "{{baseUrl}}/api/v1/auth/login",
+                "host": ["{{baseUrl}}"],
+                "path": ["api", "v1", "auth", "login"]
+              },
+              "description": "Log in with email and password"
+            },
+            "response": [
+              {
+                "name": "Successful Login",
+                "originalRequest": {
+                  "method": "POST",
+                  "header": [],
+                  "body": {
+                    "mode": "raw",
+                    "raw": "{\n    \"email\": \"user@example.com\",\n    \"password\": \"password123\"\n}"
+                  },
+                  "url": {
+                    "raw": "{{baseUrl}}/api/v1/auth/login",
+                    "host": ["{{baseUrl}}"],
+                    "path": ["api", "v1", "auth", "login"]
+                  }
+                },
+                "status": "OK",
+                "code": 200,
+                "_postman_previewlanguage": "json",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "cookie": [],
+                "body": "{\n    \"status\": \"success\",\n    \"token\": \"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...\",\n    \"data\": {\n        \"user\": {\n            \"id\": \"60d21b4667d0d8992e610c85\",\n            \"firstName\": \"John\",\n            \"lastName\": \"Doe\",\n            \"email\": \"user@example.com\",\n            \"phone\": \"08012345678\",\n            \"role\": \"rider\",\n            \"isVerified\": true\n        },\n        \"wallet\": {\n            \"balance\": 0,\n            \"virtualAccountNumber\": \"0123456789\",\n            \"virtualAccountName\": \"John Doe\",\n            \"virtualAccountBank\": \"Test Bank\"\n        }\n    }\n}"
+              }
+            ]
+          }
+        ],
+        "description": "Authentication endpoints for user registration and login"
+      },
+      {
+        "name": "Users",
+        "item": [
+          {
+            "name": "Get User Profile",
+            "request": {
+              "auth": {
+                "type": "bearer",
+                "bearer": [
+                  {
+                    "key": "token",
+                    "value": "{{authToken}}",
+                    "type": "string"
+                  }
+                ]
+              },
+              "method": "GET",
+              "header": [],
+              "url": {
+                "raw": "{{baseUrl}}/api/v1/users/profile",
+                "host": ["{{baseUrl}}"],
+                "path": ["api", "v1", "users", "profile"]
+              },
+              "description": "Get current user profile"
+            }
+          },
+          {
+            "name": "Update User Profile",
+            "request": {
+              "auth": {
+                "type": "bearer",
+                "bearer": [
+                  {
+                    "key": "token",
+                    "value": "{{authToken}}",
+                    "type": "string"
+                  }
+                ]
+              },
+              "method": "PATCH",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": {
+                "mode": "raw",
+                "raw": "{\n    \"firstName\": \"Updated\",\n    \"lastName\": \"Name\",\n    \"phone\": \"08012345678\",\n    \"profilePicture\": \"https://example.com/profile.jpg\"\n}"
+              },
+              "url": {
+                "raw": "{{baseUrl}}/api/v1/users/profile",
+                "host": ["{{baseUrl}}"],
+                "path": ["api", "v1", "users", "profile"]
+              },
+              "description": "Update user profile information"
+            }
+          },
+          {
+            "name": "Change Password",
+            "request": {
+              "auth": {
+                "type": "bearer",
+                "bearer": [
+                  {
+                    "key": "token",
+                    "value": "{{authToken}}",
+                    "type": "string"
+                  }
+                ]
+              },
+              "method": "POST",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": {
+                "mode": "raw",
+                "raw": "{\n    \"currentPassword\": \"oldPassword123\",\n    \"newPassword\": \"newPassword123\"\n}"
+              },
+              "url": {
+                "raw": "{{baseUrl}}/api/v1/users/change-password",
+                "host": ["{{baseUrl}}"],
+                "path": ["api", "v1", "users", "change-password"]
+              },
+              "description": "Change user password"
+            }
+          }
+        ]
+      },
+      {
+        "name": "Drivers",
+        "item": [
+          {
+            "name": "Get Driver Profile",
+            "request": {
+              "auth": {
+                "type": "bearer",
+                "bearer": [
+                  {
+                    "key": "token",
+                    "value": "{{authToken}}",
+                    "type": "string"
+                  }
+                ]
+              },
+              "method": "GET",
+              "header": [],
+              "url": {
+                "raw": "{{baseUrl}}/api/v1/drivers/profile",
+                "host": ["{{baseUrl}}"],
+                "path": ["api", "v1", "drivers", "profile"]
+              },
+              "description": "Get driver profile details"
+            }
+          },
+          {
+            "name": "Update Driver Profile",
+            "request": {
+              "auth": {
+                "type": "bearer",
+                "bearer": [
+                  {
+                    "key": "token",
+                    "value": "{{authToken}}",
+                    "type": "string"
+                  }
+                ]
+              },
+              "method": "PATCH",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": {
+                "mode": "raw",
+                "raw": "{\n    \"vehicleMake\": \"Honda\",\n    \"vehicleModel\": \"Civic\",\n    \"vehicleColor\": \"Red\"\n}"
+              },
+              "url": {
+                "raw": "{{baseUrl}}/api/v1/drivers/profile",
+                "host": ["{{baseUrl}}"],
+                "path": ["api", "v1", "drivers", "profile"]
+              },
+              "description": "Update driver profile information"
+            }
+          },
+          {
+            "name": "Update Driver Availability",
+            "request": {
+              "auth": {
+                "type": "bearer",
+                "bearer": [
+                  {
+                    "key": "token",
+                    "value": "{{authToken}}",
+                    "type": "string"
+                  }
+                ]
+              },
+              "method": "PATCH",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": {
+                "mode": "raw",
+                "raw": "{\n    \"isAvailable\": true\n}"
+              },
+              "url": {
+                "raw": "{{baseUrl}}/api/v1/drivers/availability",
+                "host": ["{{baseUrl}}"],
+                "path": ["api", "v1", "drivers", "availability"]
+              },
+              "description": "Update driver availability status"
+            }
+          },
+          {
+            "name": "Update Driver Location",
+            "request": {
+              "auth": {
+                "type": "bearer",
+                "bearer": [
+                  {
+                    "key": "token",
+                    "value": "{{authToken}}",
+                    "type": "string"
+                  }
+                ]
+              },
+              "method": "PATCH",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": {
+                "mode": "raw",
+                "raw": "{\n    \"coordinates\": [3.3792, 6.5244]\n}"
+              },
+              "url": {
+                "raw": "{{baseUrl}}/api/v1/drivers/location",
+                "host": ["{{baseUrl}}"],
+                "path": ["api", "v1", "drivers", "location"]
+              },
+              "description": "Update driver location"
+            }
+          },
+          {
+            "name": "Get Driver Rides",
+            "request": {
+              "auth": {
+                "type": "bearer",
+                "bearer": [
+                  {
+                    "key": "token",
+                    "value": "{{authToken}}",
+                    "type": "string"
+                  }
+                ]
+              },
+              "method": "GET",
+              "header": [],
+              "url": {
+                "raw": "{{baseUrl}}/api/v1/drivers/rides?status=completed&page=1&limit=10",
+                "host": ["{{baseUrl}}"],
+                "path": ["api", "v1", "drivers", "rides"],
+                "query": [
+                  {
+                    "key": "status",
+                    "value": "completed"
+                  },
+                  {
+                    "key": "page",
+                    "value": "1"
+                  },
+                  {
+                    "key": "limit",
+                    "value": "10"
+                  }
+                ]
+              },
+              "description": "Get driver's ride history"
+            }
+          },
+          {
+            "name": "Get Driver Earnings",
+            "request": {
+              "auth": {
+                "type": "bearer",
+                "bearer": [
+                  {
+                    "key": "token",
+                    "value": "{{authToken}}",
+                    "type": "string"
+                  }
+                ]
+              },
+              "method": "GET",
+              "header": [],
+              "url": {
+                "raw": "{{baseUrl}}/api/v1/drivers/earnings?period=weekly",
+                "host": ["{{baseUrl}}"],
+                "path": ["api", "v1", "drivers", "earnings"],
+                "query": [
+                  {
+                    "key": "period",
+                    "value": "weekly"
+                  }
+                ]
+              },
+              "description": "Get driver's earnings summary"
+            }
+          }
+        ]
+      },
+      {
+        "name": "Rides",
+        "item": [
+          {
+            "name": "Request Ride",
+            "request": {
+              "auth": {
+                "type": "bearer",
+                "bearer": [
+                  {
+                    "key": "token",
+                    "value": "{{authToken}}",
+                    "type": "string"
+                  }
+                ]
+              },
+              "method": "POST",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": {
+                "mode": "raw",
+                "raw": "{\n    \"pickupLocation\": {\n        \"name\": \"University Main Gate\",\n        \"coordinates\": [3.3792, 6.5244]\n    },\n    \"dropoffLocation\": {\n        \"name\": \"Student Hostel\",\n        \"coordinates\": [3.3891, 6.5341]\n    },\n    \"distance\": 2.5,\n    \"duration\": 15,\n    \"paymentMethod\": \"cash\"\n}"
+              },
+              "url": {
+                "raw": "{{baseUrl}}/api/v1/rides/request",
+                "host": ["{{baseUrl}}"],
+                "path": ["api", "v1", "rides", "request"]
+              },
+              "description": "Request a new ride"
+            }
+          },
+          {
+            "name": "Accept Ride",
+            "request": {
+              "auth": {
+                "type": "bearer",
+                "bearer": [
+                  {
+                    "key": "token",
+                    "value": "{{authToken}}",
+                    "type": "string"
+                  }
+                ]
+              },
+              "method": "POST",
+              "header": [],
+              "url": {
+                "raw": "{{baseUrl}}/api/v1/rides/:rideId/accept",
+                "host": ["{{baseUrl}}"],
+                "path": ["api", "v1", "rides", ":rideId", "accept"],
+                "variable": [
+                  {
+                    "key": "rideId",
+                    "value": "60d21b4667d0d8992e610c85"
+                  }
+                ]
+              },
+              "description": "Driver accepts a ride"
+            }
+          },
+          {
+            "name": "Start Ride",
+            "request": {
+              "auth": {
+                "type": "bearer",
+                "bearer": [
+                  {
+                    "key": "token",
+                    "value": "{{authToken}}",
+                    "type": "string"
+                  }
+                ]
+              },
+              "method": "POST",
+              "header": [],
+              "url": {
+                "raw": "{{baseUrl}}/api/v1/rides/:rideId/start",
+                "host": ["{{baseUrl}}"],
+                "path": ["api", "v1", "rides", ":rideId", "start"],
+                "variable": [
+                  {
+                    "key": "rideId",
+                    "value": "60d21b4667d0d8992e610c85"
+                  }
+                ]
+              },
+              "description": "Start a ride that has been accepted"
+            }
+          },
+          {
+            "name": "Complete Ride",
+            "request": {
+              "auth": {
+                "type": "bearer",
+                "bearer": [
+                  {
+                    "key": "token",
+                    "value": "{{authToken}}",
+                    "type": "string"
+                  }
+                ]
+              },
+              "method": "POST",
+              "header": [],
+              "url": {
+                "raw": "{{baseUrl}}/api/v1/rides/:rideId/complete",
+                "host": ["{{baseUrl}}"],
+                "path": ["api", "v1", "rides", ":rideId", "complete"],
+                "variable": [
+                  {
+                    "key": "rideId",
+                    "value": "60d21b4667d0d8992e610c85"
+                  }
+                ]
+              },
+              "description": "Complete an ongoing ride"
+            }
+          },
+          {
+            "name": "Cancel Ride",
+            "request": {
+              "auth": {
+                "type": "bearer",
+                "bearer": [
+                  {
+                    "key": "token",
+                    "value": "{{authToken}}",
+                    "type": "string"
+                  }
+                ]
+              },
+              "method": "POST",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": {
+                "mode": "raw",
+                "raw": "{\n    \"reason\": \"Changed my mind\"\n}"
+              },
+              "url": {
+                "raw": "{{baseUrl}}/api/v1/rides/:rideId/cancel",
+                "host": ["{{baseUrl}}"],
+                "path": ["api", "v1", "rides", ":rideId", "cancel"],
+                "variable": [
+                  {
+                    "key": "rideId",
+                    "value": "60d21b4667d0d8992e610c85"
+                  }
+                ]
+              },
+              "description": "Cancel a ride (can be done by rider or driver)"
+            }
+          },
+          {
+            "name": "Get Rider's Ride History",
+            "request": {
+              "auth": {
+                "type": "bearer",
+                "bearer": [
+                  {
+                    "key": "token",
+                    "value": "{{authToken}}",
+                    "type": "string"
+                  }
+                ]
+              },
+              "method": "GET",
+              "header": [],
+              "url": {
+                "raw": "{{baseUrl}}/api/v1/rides/history?status=completed&page=1&limit=10",
+                "host": ["{{baseUrl}}"],
+                "path": ["api", "v1", "rides", "history"],
+                "query": [
+                  {
+                    "key": "status",
+                    "value": "completed"
+                  },
+                  {
+                    "key": "page",
+                    "value": "1"
+                  },
+                  {
+                    "key": "limit",
+                    "value": "10"
+                  }
+                ]
+              },
+              "description": "Get rider's ride history"
+            }
+          },
+          {
+            "name": "Get Ride Details",
+            "request": {
+              "auth": {
+                "type": "bearer",
+                "bearer": [
+                  {
+                    "key": "token",
+                    "value": "{{authToken}}",
+                    "type": "string"
+                  }
+                ]
+              },
+              "method": "GET",
+              "header": [],
+              "url": {
+                "raw": "{{baseUrl}}/api/v1/rides/:rideId",
+                "host": ["{{baseUrl}}"],
+                "path": ["api", "v1", "rides", ":rideId"],
+                "variable": [
+                  {
+                    "key": "rideId",
+                    "value": "60d21b4667d0d8992e610c85"
+                  }
+                ]
+              },
+              "description": "Get details for a specific ride"
+            }
+          },
+          {
+            "name": "Rate Ride",
+            "request": {
+              "auth": {
+                "type": "bearer",
+                "bearer": [
+                  {
+                    "key": "token",
+                    "value": "{{authToken}}",
+                    "type": "string"
+                  }
+                ]
+              },
+              "method": "POST",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": {
+                "mode": "raw",
+                "raw": "{\n    \"rating\": 5,\n    \"review\": \"Great service!\"\n}"
+              },
+              "url": {
+                "raw": "{{baseUrl}}/api/v1/rides/:rideId/rate",
+                "host": ["{{baseUrl}}"],
+                "path": ["api", "v1", "rides", ":rideId", "rate"],
+                "variable": [
+                  {
+                    "key": "rideId",
+                    "value": "60d21b4667d0d8992e610c85"
+                  }
+                ]
+              },
+              "description": "Rate a completed ride"
+            }
+          }
+        ]
+      },
+      {
+        "name": "Wallet",
+        "item": [
+          {
+            "name": "Get Wallet Balance",
+            "request": {
+              "auth": {
+                "type": "bearer",
+                "bearer": [
+                  {
+                    "key": "token",
+                    "value": "{{authToken}}",
+                    "type": "string"
+                  }
+                ]
+              },
+              "method": "GET",
+              "header": [],
+              "url": {
+                "raw": "{{baseUrl}}/api/v1/wallet/balance",
+                "host": ["{{baseUrl}}"],
+                "path": ["api", "v1", "wallet", "balance"]
+              },
+              "description": "Get user's wallet balance"
+            }
+          },
+          {
+            "name": "Get Wallet Transactions",
+            "request": {
+              "auth": {
+                "type": "bearer",
+                "bearer": [
+                  {
+                    "key": "token",
+                    "value": "{{authToken}}",
+                    "type": "string"
+                  }
+                ]
+              },
+              "method": "GET",
+              "header": [],
+              "url": {
+                "raw": "{{baseUrl}}/api/v1/wallet/transactions?page=1&limit=10",
+                "host": ["{{baseUrl}}"],
+                "path": ["api", "v1", "wallet", "transactions"],
+                "query": [
+                  {
+                    "key": "page",
+                    "value": "1"
+                  },
+                  {
+                    "key": "limit",
+                    "value": "10"
+                  }
+                ]
+              },
+              "description": "Get user's wallet transaction history"
+            }
+          },
+          {
+            "name": "Admin Top-up Wallet",
+            "request": {
+              "auth": {
+                "type": "bearer",
+                "bearer": [
+                  {
+                    "key": "token",
+                    "value": "{{authToken}}",
+                    "type": "string"
+                  }
+                ]
+              },
+              "method": "POST",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": {
+                "mode": "raw",
+                "raw": "{\n    \"userId\": \"60d21b4667d0d8992e610c85\",\n    \"amount\": 5000,\n    \"description\": \"Manual top-up by admin\"\n}"
+              },
+              "url": {
+                "raw": "{{baseUrl}}/api/v1/wallet/admin/topup",
+                "host": ["{{baseUrl}}"],
+                "path": ["api", "v1", "wallet", "admin", "topup"]
+              },
+              "description": "Admin manually tops up a user's wallet"
+            }
+          }
+        ]
+      },
+      {
+        "name": "Admin",
+        "item": [
+          {
+            "name": "Get Dashboard Stats",
+            "request": {
+              "auth": {
+                "type": "bearer",
+                "bearer": [
+                  {
+                    "key": "token",
+                    "value": "{{authToken}}",
+                    "type": "string"
+                  }
+                ]
+              },
+              "method": "GET",
+              "header": [],
+              "url": {
+                "raw": "{{baseUrl}}/api/v1/admin/dashboard",
+                "host": ["{{baseUrl}}"],
+                "path": ["api", "v1", "admin", "dashboard"]
+              },
+              "description": "Get statistics for admin dashboard"
+            }
+          },
+          {
+            "name": "Get All Users",
+            "request": {
+              "auth": {
+                "type": "bearer",
+                "bearer": [
+                  {
+                    "key": "token",
+                    "value": "{{authToken}}",
+                    "type": "string"
+                  }
+                ]
+              },
+              "method": "GET",
+              "header": [],
+              "url": {
+                "raw": "{{baseUrl}}/api/v1/admin/users?role=rider&page=1&limit=10",
+                "host": ["{{baseUrl}}"],
+                "path": ["api", "v1", "admin", "users"],
+                "query": [
+                  {
+                    "key": "role",
+                    "value": "rider"
+                  },
+                  {
+                    "key": "page",
+                    "value": "1"
+                  },
+                  {
+                    "key": "limit",
+                    "value": "10"
+                  }
+                ]
+              },
+              "description": "Get all users with pagination and filtering"
+            }
+          },
+          {
+            "name": "Get User Details",
+            "request": {
+              "auth": {
+                "type": "bearer",
+                "bearer": [
+                  {
+                    "key": "token",
+                    "value": "{{authToken}}",
+                    "type": "string"
+                  }
+                ]
+              },
+              "method": "GET",
+              "header": [],
+              "url": {
+                "raw": "{{baseUrl}}/api/v1/admin/users/:userId",
+                "host": ["{{baseUrl}}"],
+                "path": ["api", "v1", "admin", "users", ":userId"],
+                "variable": [
+                  {
+                    "key": "userId",
+                    "value": "60d21b4667d0d8992e610c85"
+                  }
+                ]
+              },
+              "description": "Get details for a specific user"
+            }
+          },
+          {
+            "name": "Update User Status",
+            "request": {
+              "auth": {
+                "type": "bearer",
+                "bearer": [
+                  {
+                    "key": "token",
+                    "value": "{{authToken}}",
+                    "type": "string"
+                  }
+                ]
+              },
+              "method": "PATCH",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": {
+                "mode": "raw",
+                "raw": "{\n    \"isActive\": false\n}"
+              },
+              "url": {
+                "raw": "{{baseUrl}}/api/v1/admin/users/:userId/status",
+                "host": ["{{baseUrl}}"],
+                "path": ["api", "v1", "admin", "users", ":userId", "status"],
+                "variable": [
+                  {
+                    "key": "userId",
+                    "value": "60d21b4667d0d8992e610c85"
+                  }
+                ]
+              },
+              "description": "Activate or deactivate a user"
+            }
+          },
+          {
+            "name": "Get Pending Driver Approvals",
+            "request": {
+              "auth": {
+                "type": "bearer",
+                "bearer": [
+                  {
+                    "key": "token",
+                    "value": "{{authToken}}",
+                    "type": "string"
+                  }
+                ]
+              },
+              "method": "GET",
+              "header": [],
+              "url": {
+                "raw": "{{baseUrl}}/api/v1/admin/drivers/pending",
+                "host": ["{{baseUrl}}"],
+                "path": ["api", "v1", "admin", "drivers", "pending"]
+              },
+              "description": "Get list of pending driver approval requests"
+            }
+          },
+          {
+            "name": "Approve/Reject Driver",
+            "request": {
+              "auth": {
+                "type": "bearer",
+                "bearer": [
+                  {
+                    "key": "token",
+                    "value": "{{authToken}}",
+                    "type": "string"
+                  }
+                ]
+              },
+              "method": "PATCH",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": {
+                "mode": "raw",
+                "raw": "{\n    \"approve\": true\n}"
+              },
+              "url": {
+                "raw": "{{baseUrl}}/api/v1/admin/drivers/:driverId/approve",
+                "host": ["{{baseUrl}}"],
+                "path": ["api", "v1", "admin", "drivers", ":driverId", "approve"],
+                "variable": [
+                  {
+                    "key": "driverId",
+                    "value": "60d21b4667d0d8992e610c85"
+                  }
+                ]
+              },
+              "description": "Approve or reject a driver registration"
+            }
+          },
+          {
+            "name": "Get All Rides",
+            "request": {
+              "auth": {
+                "type": "bearer",
+                "bearer": [
+                  {
+                    "key": "token",
+                    "value": "{{authToken}}",
+                    "type": "string"
+                  }
+                ]
+              },
+              "method": "GET",
+              "header": [],
+              "url": {
+                "raw": "{{baseUrl}}/api/v1/admin/rides?status=completed&page=1&limit=10",
+                "host": ["{{baseUrl}}"],
+                "path": ["api", "v1", "admin", "rides"],
+                "query": [
+                  {
+                    "key": "status",
+                    "value": "completed"
+                  },
+                  {
+                    "key": "page",
+                    "value": "1"
+                  },
+                  {
+                    "key": "limit",
+                    "value": "10"
+                  }
+                ]
+              },
+              "description": "Get all rides with pagination and filtering"
+            }
+          },
+          {
+            "name": "Get All Transactions",
+            "request": {
+              "auth": {
+                "type": "bearer",
+                "bearer": [
+                  {
+                    "key": "token",
+                    "value": "{{authToken}}",
+                    "type": "string"
+                  }
+                ]
+              },
+              "method": "GET",
+              "header": [],
+              "url": {
+                "raw": "{{baseUrl}}/api/v1/admin/transactions?type=credit&status=successful&page=1&limit=10",
+                "host": ["{{baseUrl}}"],
+                "path": ["api", "v1", "admin", "transactions"],
+                "query": [
+                  {
+                    "key": "type",
+                    "value": "credit"
+                  },
+                  {
+                    "key": "status",
+                    "value": "successful"
+                  },
+                  {
+                    "key": "page",
+                    "value": "1"
+                  },
+                  {
+                    "key": "limit",
+                    "value": "10"
+                  }
+                ]
+              },
+              "description": "Get all transactions with pagination and filtering"
+            }
+          }
+        ]
+      }
+    ],
+    "event": [
+      {
+        "listen": "prerequest",
+        "script": {
+          "type": "text/javascript",
+          "exec": [
+            ""
+          ]
+        }
+      },
+      {
+        "listen": "test",
+        "script": {
+          "type": "text/javascript",
+          "exec": [
+            ""
+          ]
+        }
+      }
+    ],
+    "variable": [
+      {
+        "key": "baseUrl",
+        "value": "http://localhost:5000",
+        "type": "string"
+      },
+      {
+        "key": "authToken",
+        "value": "YOUR_JWT_TOKEN_HERE",
+        "type": "string"
+      }
+    ]
+  }
+  
